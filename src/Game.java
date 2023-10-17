@@ -12,7 +12,8 @@ public class Game {
         String[][] levelOptions = Locations.levelOptions;
 
         for (int i = 0; i < levelNames.length; i++) {
-            List<String> locations = List.of(levelNames[i]);
+            List<String> locations = new ArrayList<>();
+            locations.add(levelNames[i]);
             List<String[]> options = new ArrayList<>();
             options.add(levelOptions[i]);
             levels.add(new Level("Poziom " + (i + 1), locations, options));
@@ -20,9 +21,7 @@ public class Game {
     }
 
     public void startGame() {
-        System.out.println("Podaj swoje imię: ");
-        String playerName = scanner.nextLine();
-        System.out.println("Witaj, " + playerName + "!");
+        String playerName = PlayerUtils.welcomePlayer();
 
         while (currentLevelIndex < levels.size()) {
             Level currentLevel = levels.get(currentLevelIndex);
@@ -41,14 +40,11 @@ public class Game {
 
             if (choice >= 1 && choice <= options.size()) {
                 String[] chosenOptions = options.get(choice - 1);
-                System.out.println("Jesteś teraz w lokalizacji: " + locations.get(choice - 1));
+                System.out.println("Jesteś teraz w lokalizacji: " + chosenOptions[0]); // Wyświetl aktualną lokalizację
 
-                if (chosenOptions.length == 1) {
-                    // Jeśli opcja prowadzi do jednej lokalizacji, przechodzimy do niej
-                    currentLevelIndex = findLocationIndex(chosenOptions[0]);
-                } else {
-                    // Jeśli mamy więcej niż jedną opcję, wybieramy, do której lokalizacji chcemy iść
+                if (chosenOptions.length > 1) {
                     System.out.println("Dostępne opcje:");
+
                     for (int i = 0; i < chosenOptions.length; i++) {
                         System.out.println((i + 1) + ". " + chosenOptions[i]);
                     }
@@ -57,22 +53,17 @@ public class Game {
                     int optionChoice = scanner.nextInt();
 
                     if (optionChoice >= 1 && optionChoice <= chosenOptions.length) {
-                        currentLevelIndex = findLocationIndex(chosenOptions[optionChoice - 1]);
+                        // Zaktualizuj aktualny poziom na podstawie wyboru
+                        currentLevelIndex++;
                     }
+                } else {
+                    System.out.println("Gratulacje, ukończyłeś poziom " + currentLevel.getName() + "!");
+                    currentLevelIndex++; // Przejdź do następnego poziomu
                 }
             } else {
                 System.out.println("Nieprawidłowy wybór. Wybierz numer od 1 do " + options.size());
             }
         }
         System.out.println("Gratulacje, ukończyłeś wszystkie poziomy gry!");
-    }
-
-    private int findLocationIndex(String locationName) {
-        for (int i = 0; i < levels.size(); i++) {
-            if (levels.get(i).getLocations().get(0).equals(locationName)) {
-                return i;
-            }
-        }
-        return currentLevelIndex;
     }
 }
