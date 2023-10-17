@@ -8,16 +8,8 @@ public class Game {
     private Scanner scanner = new Scanner(System.in);
 
     public Game() {
-        // Poziom 1
-        String[] levelNames = {"Skrzyżowanie", "Las", "Bagna", "Wioska"};
-
-        // Opcje dla poszczególnych poziomów
-        String[][] levelOptions = {
-                {"Idz na bagna", "Idz do Lasu"},
-                {"Idz do Lasu", "Wroc na Skrzyżowanie", "Idz do Rzeki"},
-                {"Idz na Las", "Wroc na Skrzyżowanie"},
-                {"Idz do Lasu", "Wroc na Bagna"}
-        };
+        String[] levelNames = Locations.levelNames;
+        String[][] levelOptions = Locations.levelOptions;
 
         for (int i = 0; i < levelNames.length; i++) {
             List<String> locations = List.of(levelNames[i]);
@@ -60,6 +52,7 @@ public class Game {
                     for (int i = 0; i < chosenOptions.length; i++) {
                         System.out.println((i + 1) + ". " + chosenOptions[i]);
                     }
+
                     System.out.println("Wybierz opcję (1-" + chosenOptions.length + "): ");
                     int optionChoice = scanner.nextInt();
 
