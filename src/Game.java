@@ -18,6 +18,11 @@ public class Game {
         while (currentLocation != null) {
             System.out.println("You are at " + currentLocation.name);
 
+            // Sprawdzamy, czy dla bieżącej lokalizacji jest przypisana wiadomość
+            if (currentLocation.message != null) {
+                System.out.println(currentLocation.message.toMessage());
+            }
+
             List<Locations.Option> options = currentLocation.options;
 
             for (int i = 0; i < options.size(); i++) {
