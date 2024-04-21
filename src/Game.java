@@ -5,20 +5,25 @@ public class Game {
     private List<Locations.Location> locations;
     private Locations.Location currentLocation;
     private Scanner scanner;
+    private Inventory inventory;
 
     public Game() {
         locations = Locations.createLocations();
-        currentLocation = locations.get(0); // Ustawienie początkowej lokalizacji na pierwszą lokalizację z listy
+        currentLocation = locations.get(0);
         scanner = new Scanner(System.in);
+        inventory = new Inventory();
     }
 
     public void startGame() {
-        String playerName = PlayerUtils.welcomePlayer();
+        String playerName;
+
+        do {
+            playerName = PlayerUtils.welcomePlayer();
+        } while (playerName == null);
 
         while (currentLocation != null) {
             System.out.println("You are at " + currentLocation.name);
 
-            // Sprawdzamy, czy dla bieżącej lokalizacji jest przypisana wiadomość
             if (currentLocation.message != null) {
                 System.out.println(currentLocation.message.toMessage());
             }
@@ -34,17 +39,39 @@ public class Game {
             int choice = scanner.nextInt();
 
             if (choice >= 1 && choice <= options.size()) {
-                // Aktualizacja bieżącej lokalizacji na podstawie wyboru gracza
                 Locations.Option selectedOption = options.get(choice - 1);
-                for (Locations.Location location : locations) {
-                    if (selectedOption.optionValue.equals(location.name)) {
-                        currentLocation = location;
-                        break;
-                    }
-                }
+                handleOption(selectedOption);
             } else {
                 System.out.println("Invalid choice. Please choose a number from 1 to " + options.size());
             }
         }
+    }
+
+    private void handleOption(Locations.Option option) {
+        String optionValue = option.optionValue;
+        for (Locations.Location location : locations) {
+            if (optionValue.equals(location.name)) {
+                if (location.items != null && !location.items.isEmpty()) {
+                    for (Locations.Item item : location.items) {
+                        if (option.optionName.equals(item.action)) {
+                            if (item.action.equals("Pick up torch")) {
+                                // Jeśli akcja to "Pick up torch", dodaj przedmiot do inventory
+                                inventory.addItem(new Inventory.Item(item.itemName, item.itemId, item.action));
+                                System.out.println("Torch added to inventory.");
+                            } else {
+                                System.out.println("Invalid action.");
+                            }
+                        }
+                    }
+                }
+                currentLocation = location;
+                break;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.startGame();
     }
 }
