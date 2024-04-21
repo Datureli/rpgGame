@@ -79,14 +79,13 @@ public class Locations {
 
     public static List<Location> createLocations() {
         List<Location> locations = new ArrayList<>();
-        // Lokalizacja: Crossroad
+
         Location crossroad = new Location("Crossroad", Arrays.asList(
                 new Option("Go to the swamps", "Swamps", true), // true oznacza, że opcja jest możliwa do podniesienia
                 new Option("Go to the forest", "Forest", true)
         ), null, null);
         locations.add(crossroad);
 
-        // Lokalizacja: Swamps
         Location swamps = new Location("Swamps", Arrays.asList(
                 new Option("Pick up torch", "SwampCheck", true),
                 new Option("Go to the forest", "Forest", false),
@@ -97,7 +96,6 @@ public class Locations {
         ));
         locations.add(swamps);
 
-        // Lokalizacja: Forest
         Location forest = new Location("Forest", Arrays.asList(
                 new Option("Return to the crossroad", "Crossroad", true),
                 new Option("Go to the river", "River", true),
@@ -105,7 +103,6 @@ public class Locations {
         ), null, null);
         locations.add(forest);
 
-        // Lokalizacja: River
         Location river = new Location("River", Arrays.asList(
                 new Option("Go to the forest", "Forest", true),
                 new Option("Return to the crossroad", "Crossroad", true)

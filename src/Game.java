@@ -2,10 +2,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Game {
-    private List<Locations.Location> locations;
+    private final List<Locations.Location> locations;
     private Locations.Location currentLocation;
-    private Scanner scanner;
-    private Inventory inventory;
+    private final Scanner scanner;
+    private final Inventory inventory;
+
 
     public Game() {
         locations = Locations.createLocations();
